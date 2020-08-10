@@ -77,9 +77,9 @@ void MainLoop() {
 			system("CLS");
 			Print({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10);
 			Print({1,3}, L"Which Program Would you Like to Use?");
-			Print({2,4}, L"(1) Deque Program", 7);
-			Print({2,5}, L"(2) Quicksort Program", 7);
-			Print({2,7}, L"Choice: ");
+			Print({2,4}, L"(1) Deque Program", 8);
+			Print({2,5}, L"(2) Quicksort Program", 8);
+			Print({2,7}, L"Choice: ", 7);
 
 			state = IntInput(0,2);
 
