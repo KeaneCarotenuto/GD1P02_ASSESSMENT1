@@ -1,5 +1,5 @@
 #include <iostream>
-#define NOMINMAX
+#define NOMINMAX //Used for max and min int (in IntInput), two libraries seem to conflict about this
 #include <windows.h>
 #include <cmath>
 #include <io.h>
@@ -28,6 +28,7 @@ int IntInput(int min = numeric_limits<int>::min(), int max = numeric_limits<int>
 void Print(CPosition pos, wstring str, int effect = 15);
 void SlowPrint(CPosition _pos, wstring _message, int effect = 15, int _wait = 20);
 
+//The main function, used to call the inital programs, and then the main loop.
 int main() {
 	SetupProgram();
 	Sleep(1000);
@@ -39,7 +40,7 @@ int main() {
 	return 0;
 }
 
-//Changes The console size etc
+//Changes The console size, buffer size, text format, cursor format, and sets random seed
 void SetupProgram()
 {
 	//Enable the use of Unicode
@@ -68,6 +69,7 @@ void SetupProgram()
 	srand(static_cast <unsigned> (time(0)));
 }
 
+//The Main Loop that manages Which program is currently running
 void MainLoop() {
 	int state = 0;
 
@@ -111,17 +113,21 @@ void MainLoop() {
 	return;
 }
 
+//This is used to Manage which Program the user would like to use.
 int Menu() {
 	system("CLS");
 	Print({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10);
 	Print({ 1,3 }, L"Which Program Would you Like to Use?");
-	Print({ 2,5 }, L"(1) Deque Program", 8);
-	Print({ 2,6 }, L"(2) Quicksort Program", 8);
-	Print({ 2,8 }, L"Choice: ", 7);
+	Print({ 2,5 }, L"(1) Deque Program", 7);
+	Print({ 2,6 }, L"(2) Quicksort Program", 7);
+	Print({ 2,8 }, L"Choice: ", 8);
 
 	return IntInput(0, 2);
 }
 
+
+//This is the main portion of the Deque Program. Each Case is one of the options that can be taken to interact with the Deque.
+//This system is managed by a switch case, for ease of reading. Each case is one option, and does one thing.
 int Deque() {
 	CDeque* myDeque = new CDeque;
 
@@ -129,19 +135,19 @@ int Deque() {
 		system("CLS");
 		Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 		Print({ 1,3 }, L"Which Opperatoin Would you Like to Test?");
-		Print({ 2,5 }, L"(0) Return To Menu (Will Lose List)", 8);
-		Print({ 2,7 }, L"(1) Enqueue at Front", 8);
-		Print({ 2,8 }, L"(2) Enqueue at Back", 8);
-		Print({ 2,10 }, L"(3) Dequeue at Front", 8);
-		Print({ 2,11 }, L"(4) Dequeue at Back", 8);
-		Print({ 2,13 }, L"(5) Peek at Front", 8);
-		Print({ 2,14 }, L"(6) Peek at Back", 8);
-		Print({ 2,16 }, L"(7) Check Empty", 8);
-		Print({ 2,18 }, L"(8) Reset Deque", 8);
+		Print({ 2,5 }, L"(0) Return To Menu (Will Lose List)", 7);
+		Print({ 2,7 }, L"(1) Enqueue at Front", 7);
+		Print({ 2,8 }, L"(2) Enqueue at Back", 7);
+		Print({ 2,10 }, L"(3) Dequeue at Front", 7);
+		Print({ 2,11 }, L"(4) Dequeue at Back", 7);
+		Print({ 2,13 }, L"(5) Peek at Front", 7);
+		Print({ 2,14 }, L"(6) Peek at Back", 7);
+		Print({ 2,16 }, L"(7) Check Empty", 7);
+		Print({ 2,18 }, L"(8) Reset Deque", 7);
 
 		myDeque->DisplayArray({50,3},true);
 
-		Print({ 2,20 }, L"Choice: ", 7);
+		Print({ 2,20 }, L"Choice: ", 8);
 		int dequeState = IntInput(0, 8);
 
 		int theData = 0;
@@ -149,26 +155,32 @@ int Deque() {
 		switch (dequeState)
 		{
 		case 1:
+			//Enqueue at front 
+
 			system("CLS");
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
-			Print({ 1,3 }, L"Please Enter a Number to Enque at Front: ");
-			Print({ 2,5 }, L"Choice: ", 7);
+			Print({ 1,3 }, L"Please Enter a Number to Enqueue at Front: ");
+			Print({ 2,5 }, L"Choice: ", 8);
 
 			myDeque->Enqueue_Front(IntInput());
 
 			break;
 
 		case 2:
+			//Enqueue at back
+
 			system("CLS");
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
-			Print({ 1,3 }, L"Please Enter a Number to Enque at Back: ");
-			Print({ 2,5 }, L"Choice: ", 7);
+			Print({ 1,3 }, L"Please Enter a Number to Enqueue at Back: ");
+			Print({ 2,5 }, L"Choice: ", 8);
 
 			myDeque->Enqueue_Back(IntInput());
 
 			break;
 
 		case 3:
+			//Dequeue at front
+
 			system("CLS");
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Dequeuing from Front...", 15, 10);
@@ -185,6 +197,8 @@ int Deque() {
 			break;
 
 		case 4:
+			//Dequeue at back
+
 			system("CLS");
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Dequeuing from Back...", 15, 10);
@@ -201,6 +215,8 @@ int Deque() {
 			break;
 
 		case 5:
+			//Peek Front
+
 			system("CLS");
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Peeking at Front...", 15, 10);
@@ -213,9 +229,12 @@ int Deque() {
 			}
 
 			system("pause");
+
 			break;
 
 		case 6:
+			//Peek Back
+
 			system("CLS");
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Peeking at Back...", 15, 10);
@@ -228,9 +247,12 @@ int Deque() {
 			}
 
 			system("pause");
+
 			break;
 
 		case 7:
+			//IsEmpty
+
 			system("CLS");
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Checking Emptyness...", 15, 10);
@@ -244,13 +266,19 @@ int Deque() {
 			}
 
 			system("pause");
+
 			break;
 
 		case 8:
+			//Reset
+
 			return 1;
+
 			break;
 
 		default:
+			//Return to Menu
+
 			return 0;
 
 			break;
@@ -312,9 +340,12 @@ void DisplayArray(int _arr[], int _arrSize) {
 	cout << " END." << endl;
 }
 
+//used to manage integer inputs from the user. Filters out bad inputs and asks again. Can be configured to be between a range.
 int IntInput(int min, int max) {
 	int tempInt;
 	cin >> tempInt;
+
+	//If input is bad, ask again.
 	while (cin.fail() || tempInt < min || tempInt > max) {
 		cin.clear();
 		cin.ignore(INT_MAX, '\n');
