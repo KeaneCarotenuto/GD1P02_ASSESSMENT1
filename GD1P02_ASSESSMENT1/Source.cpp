@@ -16,15 +16,17 @@ void SetupProgram();
 
 void MainLoop();
 
+int Menu();
+int Deque();
+
 void QuickSort(int _arr[], int lowest, int highest);
 int Split(int _arr[], int lowest, int highest);
 void swap(int* a, int* b);
 void DisplayArray(int _arr[], int);
 
-int IntInput(int, int);
+int IntInput(int min = numeric_limits<int>::min(), int max = numeric_limits<int>::max());
 void Print(CPosition pos, wstring str, int effect = 15);
 void SlowPrint(CPosition _pos, wstring _message, int effect = 15, int _wait = 20);
-void GotoXY(CPosition pos);
 
 int main() {
 	SetupProgram();
@@ -74,20 +76,13 @@ void MainLoop() {
 		switch (state)
 		{
 		case 0:
-			system("CLS");
-			Print({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10);
-			Print({1,3}, L"Which Program Would you Like to Use?");
-			Print({2,4}, L"(1) Deque Program", 8);
-			Print({2,5}, L"(2) Quicksort Program", 8);
-			Print({2,7}, L"Choice: ", 7);
-
-			state = IntInput(0,2);
+			state = Menu();
 
 			break;
 
 		case 1:
-			wcout << "Deque" << endl;;
-			state = IntInput(0, 2);
+			state = Deque();
+
 			break;
 
 		case 2:
@@ -114,6 +109,153 @@ void MainLoop() {
 	}
 
 	return;
+}
+
+int Menu() {
+	system("CLS");
+	Print({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10);
+	Print({ 1,3 }, L"Which Program Would you Like to Use?");
+	Print({ 2,5 }, L"(1) Deque Program", 8);
+	Print({ 2,6 }, L"(2) Quicksort Program", 8);
+	Print({ 2,8 }, L"Choice: ", 7);
+
+	return IntInput(0, 2);
+}
+
+int Deque() {
+	CDeque* myDeque = new CDeque;
+
+	while (true) {
+		system("CLS");
+		Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+		Print({ 1,3 }, L"Which Opperatoin Would you Like to Test?");
+		Print({ 2,5 }, L"(0) Return To Menu (Will Lose List)", 8);
+		Print({ 2,7 }, L"(1) Enqueue at Front", 8);
+		Print({ 2,8 }, L"(2) Enqueue at Back", 8);
+		Print({ 2,10 }, L"(3) Dequeue at Front", 8);
+		Print({ 2,11 }, L"(4) Dequeue at Back", 8);
+		Print({ 2,13 }, L"(5) Peek at Front", 8);
+		Print({ 2,14 }, L"(6) Peek at Back", 8);
+		Print({ 2,16 }, L"(7) Check Empty", 8);
+		Print({ 2,18 }, L"(8) Reset Deque", 8);
+
+		myDeque->DisplayArray({50,3},true);
+
+		Print({ 2,20 }, L"Choice: ", 7);
+		int dequeState = IntInput(0, 8);
+
+		int theData = 0;
+
+		switch (dequeState)
+		{
+		case 1:
+			system("CLS");
+			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+			Print({ 1,3 }, L"Please Enter a Number to Enque at Front: ");
+			Print({ 2,5 }, L"Choice: ", 7);
+
+			myDeque->Enqueue_Front(IntInput());
+
+			break;
+
+		case 2:
+			system("CLS");
+			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+			Print({ 1,3 }, L"Please Enter a Number to Enque at Back: ");
+			Print({ 2,5 }, L"Choice: ", 7);
+
+			myDeque->Enqueue_Back(IntInput());
+
+			break;
+
+		case 3:
+			system("CLS");
+			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+			SlowPrint({ 1,3 }, L"Dequeuing from Front...", 15, 10);
+
+			if (myDeque->Dequeue_Front(theData)) {
+				SlowPrint({ 1,4 }, L"Dequeued Data: " + to_wstring(theData) + L"\n\n", 10, 10);
+			}
+			else {
+				SlowPrint({1,4}, L"The Deque is Empty... \n\n", 12, 10);
+			}
+
+			system("pause");
+
+			break;
+
+		case 4:
+			system("CLS");
+			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+			SlowPrint({ 1,3 }, L"Dequeuing from Back...", 15, 10);
+
+			if (myDeque->Dequeue_Back(theData)) {
+				SlowPrint({ 1,4 }, L"Dequeued Data: " + to_wstring(theData) + L"\n\n", 10, 10);
+			}
+			else {
+				SlowPrint({ 1,4 }, L"The Deque is Empty... \n\n", 12, 10);
+			}
+
+			system("pause");
+
+			break;
+
+		case 5:
+			system("CLS");
+			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+			SlowPrint({ 1,3 }, L"Peeking at Front...", 15, 10);
+
+			if (myDeque->PeekFront(theData)) {
+				SlowPrint({ 1,4 }, L"Data: " + to_wstring(theData) + L"\n\n", 10, 10);
+			}
+			else {
+				SlowPrint({ 1,4 }, L"The Deque is Empty... \n\n", 12, 10);
+			}
+
+			system("pause");
+			break;
+
+		case 6:
+			system("CLS");
+			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+			SlowPrint({ 1,3 }, L"Peeking at Back...", 15, 10);
+
+			if (myDeque->PeekBack(theData)) {
+				SlowPrint({ 1,4 }, L"Data: " + to_wstring(theData) + L"\n\n", 10, 10);
+			}
+			else {
+				SlowPrint({ 1,4 }, L"The Deque is Empty... \n\n", 12, 10);
+			}
+
+			system("pause");
+			break;
+
+		case 7:
+			system("CLS");
+			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
+			SlowPrint({ 1,3 }, L"Checking Emptyness...", 15, 10);
+
+			if (myDeque->IsEmpty()) {
+				SlowPrint({ 1,4 }, L"The Deque is Empty. \n\n", 12, 10);
+				
+			}
+			else {
+				SlowPrint({ 1,4 }, L"The Deque is Not Empty. \n\n", 10, 10);
+			}
+
+			system("pause");
+			break;
+
+		case 8:
+			return 1;
+			break;
+
+		default:
+			return 0;
+
+			break;
+		}
+	}
 }
 
 void QuickSort(int _arr[], int lowest, int highest) {
@@ -170,7 +312,7 @@ void DisplayArray(int _arr[], int _arrSize) {
 	cout << " END." << endl;
 }
 
-int IntInput(int min = numeric_limits<int>::min(), int max = numeric_limits<int>::max()) {
+int IntInput(int min, int max) {
 	int tempInt;
 	cin >> tempInt;
 	while (cin.fail() || tempInt < min || tempInt > max) {
@@ -184,7 +326,7 @@ int IntInput(int min = numeric_limits<int>::min(), int max = numeric_limits<int>
 
 //Used to print out text at the specified coordinate, with the specified effect.
 void Print(CPosition pos, wstring str, int effect) {
-	GotoXY(pos);
+	CPosition::GotoXY(pos);
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), effect);
 	wcout << str;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
@@ -192,19 +334,11 @@ void Print(CPosition pos, wstring str, int effect) {
 
 //Prints text at coord with colour one letter at a time
 void SlowPrint(CPosition _pos, wstring _message, int effect, int _wait) {
-	GotoXY(_pos);
-	for (wchar_t _char : _message) {																						// TF: Iteration Structure
+	CPosition::GotoXY(_pos);
+	for (wchar_t _char : _message) {
 		Sleep(_wait);
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), effect);
 		wcout << _char;
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	}
 }
-
-//Used to move the Console Cursor to a point on the screen for more accurate text management.
-void GotoXY(CPosition pos) {
-	COORD point;
-	point.X = pos.x;
-	point.Y = pos.y;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
-};

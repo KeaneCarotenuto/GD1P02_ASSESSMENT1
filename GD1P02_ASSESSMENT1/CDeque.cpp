@@ -1,9 +1,19 @@
-#include "CDeque.h"
+﻿#include "CDeque.h"
 
 CDeque::CDeque() :
 	firstNode(nullptr),
 	LastNode(nullptr)
 {
+}
+
+CDequeNode* CDeque::GetFirstNode()
+{
+	return firstNode;
+}
+
+CDequeNode* CDeque::GetLastNode()
+{
+	return LastNode;
 }
 
 void CDeque::Enqueue_Front(int _data)
@@ -39,8 +49,6 @@ void CDeque::Enqueue_Back(int _data)
 bool CDeque::Dequeue_Front(int& data)
 {
 	if (IsEmpty()) {
-		cout << "Stack is Empty" << endl;
-		data = 0;
 		return false;
 	}
 
@@ -56,8 +64,6 @@ bool CDeque::Dequeue_Front(int& data)
 bool CDeque::Dequeue_Back(int& data)
 {
 	if (IsEmpty()) {
-		cout << "Stack is Empty" << endl;
-		data = 0;
 		return false;
 	}
 
@@ -88,8 +94,6 @@ bool CDeque::Dequeue_Back(int& data)
 int CDeque::PeekFront(int& data)
 {
 	if (IsEmpty()) {
-		cout << "Stack is Empty" << endl;
-		data = 0;
 		return false;
 	}
 
@@ -100,8 +104,6 @@ int CDeque::PeekFront(int& data)
 int CDeque::PeekBack(int& data)
 {
 	if (IsEmpty()) {
-		cout << "Stack is Empty" << endl;
-		data = 0;
 		return false;
 	}
 
@@ -112,4 +114,33 @@ int CDeque::PeekBack(int& data)
 bool CDeque::IsEmpty()
 {
 	return (firstNode == nullptr);
+}
+
+void CDeque::DisplayArray(CPosition pos, bool _isVertical)
+{
+
+	CDequeNode* tempNode = firstNode;
+
+	int row = 2;
+	int col = 13;
+
+	CPosition::GotoXY({ pos.x, pos.y});
+	wcout << L"↓ Your Deque ↓";
+
+	CPosition::GotoXY({ pos.x, pos.y + 2 });
+	wcout << L"First Node →";
+
+	while (tempNode != nullptr) {
+		CPosition::GotoXY({ pos.x + col, pos.y + row});
+		wcout << tempNode->getData() <<  ((tempNode->getNextNode() != nullptr) ? L" →" : L"");
+		col += to_string(tempNode->getData()).size() + 3;
+
+		tempNode = tempNode->getNextNode();
+
+		if (col >= 40) {
+			row+= 2;
+			col = 0;
+		}
+	}
+
 }

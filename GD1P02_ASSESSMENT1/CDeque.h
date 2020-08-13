@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
+#include <string>
 #include"CDequeNode.h"
+#include"CPosition.h"
 
 using namespace std;
 
@@ -13,6 +15,9 @@ private:
 public:
 	CDeque();
 
+	CDequeNode* GetFirstNode();
+	CDequeNode* GetLastNode();
+
 	void Enqueue_Front(int _data);
 	void Enqueue_Back(int _data);
 	bool Dequeue_Front(int& data);
@@ -20,5 +25,7 @@ public:
 	int PeekFront(int& data);
 	int PeekBack(int& data);
 	bool IsEmpty();
+
+	void DisplayArray(CPosition pos, bool _isVertical);
 };
 
