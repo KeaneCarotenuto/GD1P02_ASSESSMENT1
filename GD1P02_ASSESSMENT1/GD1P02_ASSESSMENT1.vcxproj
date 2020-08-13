@@ -126,12 +126,14 @@
     <ClCompile Include="CDeque.cpp" />
     <ClCompile Include="CDequeNode.cpp" />
     <ClCompile Include="CPosition.cpp" />
+    <ClCompile Include="CQuickSort.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CDeque.h" />
     <ClInclude Include="CDequeNode.h" />
     <ClInclude Include="CPosition.h" />
+    <ClInclude Include="CQuickSort.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

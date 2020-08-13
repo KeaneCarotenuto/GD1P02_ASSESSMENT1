@@ -26,6 +26,6 @@ public:
 	int PeekBack(int& data);
 	bool IsEmpty();
 
-	void DisplayArray(CPosition pos, bool _isVertical);
+	void DisplayArray(CPosition pos);
 };
 

@@ -9,6 +9,7 @@
 
 #include"CPosition.h"
 #include"CDeque.h"
+#include"CQuickSort.h"
 
 using namespace std;
 
@@ -18,11 +19,8 @@ void MainLoop();
 
 int Menu();
 int Deque();
+int Sort();
 
-void QuickSort(int _arr[], int lowest, int highest);
-int Split(int _arr[], int lowest, int highest);
-void swap(int* a, int* b);
-void DisplayArray(int _arr[], int);
 
 int IntInput(int min = numeric_limits<int>::min(), int max = numeric_limits<int>::max());
 void Print(CPosition pos, wstring str, int effect = 15);
@@ -88,8 +86,7 @@ void MainLoop() {
 			break;
 
 		case 2:
-			wcout << "Quicksort" << endl;
-			state = IntInput(0, 2);
+			state = Sort();
 			break;
 
 		case 3:
@@ -145,7 +142,7 @@ int Deque() {
 		Print({ 2,16 }, L"(7) Check Empty", 7);
 		Print({ 2,18 }, L"(8) Reset Deque", 7);
 
-		myDeque->DisplayArray({50,3},true);
+		myDeque->DisplayArray({50,3});
 
 		Print({ 2,20 }, L"Choice: ", 8);
 		int dequeState = IntInput(0, 8);
@@ -286,58 +283,42 @@ int Deque() {
 	}
 }
 
-void QuickSort(int _arr[], int lowest, int highest) {
-	//Only happens if the two numbers have not met in the middle.
-	if (lowest < highest) {
-		//Splits the array around one number
-		int splitIndex = Split(_arr, lowest, highest);
+int Sort() {
+	system("CLS");
+	Print({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10);
+	Print({ 1,3 }, L"Please Enter how long of an Array you want to sort");
+	Print({ 2,5 }, L"Number of Elements: ", 8);
 
-		cout << "\nLower\n";
-		DisplayArray(_arr, 10);
-		//Sorts lower half of current split
-		QuickSort(_arr, lowest, splitIndex - 1);
-		cout << "\nUpper\n";
-		DisplayArray(_arr, 10);
-		//sorts upper half of current split 
-		QuickSort(_arr, splitIndex + 1, highest);
+	int arrayLength = IntInput(1,100);
+
+	int* myArray = new int[arrayLength];
+
+	Print({ 2,7 }, L"Please Enter all " + to_wstring(arrayLength) + L" Elements now, seperated by spaces", 8);
+	Print({ 2,8 }, L"Or Enter one at a time followed by <ENTER>", 8);
+
+	for (int i = 0; i < arrayLength; i++) {
+		Print({ 0,10 + i }, L"------------------------------------------------------------------", 0);
+		Print({3,10+i}, L"Element " + to_wstring(i + 1) + L": ", 8);
+		myArray[i] = IntInput();
+		Print({ 3,10 + i }, L"------------------------------------------------------------------", 0);
+		Print({ 3,10 + i }, L"Element " + to_wstring(i + 1) + L": " + to_wstring(myArray[i]), 8);
+
 	}
-}
+	cin.clear();
+	cin.ignore(INT_MAX, '\n');
 
-//Splits given portion of array (range defined by lowest and highest)
-int Split(int _arr[], int lowest, int highest) {
-	//makes last number pivot.
-	int pivotVal = _arr[highest];
-	int lowIndex = (lowest - 1);
+	wcout << "\n\n";
+	CQuickSort::DisplayArray(myArray, arrayLength);
+	wcout << "\n";
+	CQuickSort::QuickSort(myArray, 0, arrayLength-1);
+	wcout << "\n";
+	CQuickSort::DisplayArray(myArray, arrayLength);
 
-	//Places elements on the correct side of the pivot
-	for (int i = lowest; i <= highest - 1; i++) {
-		//If smaller than pivot, swap to lowest avaliable position
-		if (_arr[i] < pivotVal) {
-			lowIndex++;
-			swap(&_arr[lowIndex], &_arr[i]);
-		}
-	}
+	wcout << "\n";
 
-	//Swaps low and high for next round of sorting
-	swap(&_arr[lowIndex + 1], &_arr[highest]);
-	return (lowIndex + 1);
-}
+	system("pause");
 
-//Swaps items in array
-void swap(int* a, int* b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
-//Draws array on screen
-void DisplayArray(int _arr[], int _arrSize) {
-	cout << _arrSize << " ";
-	cout << "Array: ";
-	for (int i = 0; i < _arrSize; i++) {
-		cout << _arr[i] << ", ";
-	}
-	cout << " END." << endl;
+	return 0;
 }
 
 //used to manage integer inputs from the user. Filters out bad inputs and asks again. Can be configured to be between a range.

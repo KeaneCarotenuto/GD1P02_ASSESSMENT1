@@ -116,7 +116,7 @@ bool CDeque::IsEmpty()
 	return (firstNode == nullptr);
 }
 
-void CDeque::DisplayArray(CPosition pos, bool _isVertical)
+void CDeque::DisplayArray(CPosition pos)
 {
 
 	CDequeNode* tempNode = firstNode;
