@@ -21,7 +21,6 @@ int Menu();
 int Deque();
 int Sort();
 
-
 int IntInput(int min = numeric_limits<int>::min(), int max = numeric_limits<int>::max());
 void Print(CPosition pos, wstring str, int effect = 15);
 void SlowPrint(CPosition _pos, wstring _message, int effect = 15, int _wait = 20);
@@ -31,7 +30,7 @@ int main() {
 	SetupProgram();
 	Sleep(1000);
 	SlowPrint({ 0,0 }, L"Booting", 0);
-	SlowPrint({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10);
+	SlowPrint({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10, 10);
 
 	MainLoop();
 
@@ -43,7 +42,7 @@ void SetupProgram()
 {
 	//Enable the use of Unicode
 	(void)_setmode(_fileno(stdout), _O_U16TEXT);
-	SlowPrint({ 0,0 }, L"Booting", 12);
+	SlowPrint({ 0,0 }, L"Booting", 12, 10);
 	
 
 	//Maximise the screen
@@ -71,7 +70,7 @@ void SetupProgram()
 void MainLoop() {
 	int state = 0;
 
-
+	//Manages program state
 	while (state != -1) {
 		switch (state)
 		{
@@ -90,19 +89,7 @@ void MainLoop() {
 			break;
 
 		case 3:
-
-			break;
-
-		case 4:
-
-			break;
-
-		case 5:
-
-			break;
-
-
-		default:
+			return;
 			break;
 		}
 	}
@@ -117,9 +104,10 @@ int Menu() {
 	Print({ 1,3 }, L"Which Program Would you Like to Use?");
 	Print({ 2,5 }, L"(1) Deque Program", 7);
 	Print({ 2,6 }, L"(2) Quicksort Program", 7);
-	Print({ 2,8 }, L"Choice: ", 8);
+	Print({ 2,7 }, L"(3) Quit", 4);
+	Print({ 2,9 }, L"Choice: ", 8);
 
-	return IntInput(0, 2);
+	return IntInput(0, 3);
 }
 
 
@@ -218,6 +206,7 @@ int Deque() {
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Peeking at Front...", 15, 10);
 
+			//Checks if valid frist
 			if (myDeque->PeekFront(theData)) {
 				SlowPrint({ 1,4 }, L"Data: " + to_wstring(theData) + L"\n\n", 10, 10);
 			}
@@ -236,6 +225,7 @@ int Deque() {
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Peeking at Back...", 15, 10);
 
+			//Checks if valid first
 			if (myDeque->PeekBack(theData)) {
 				SlowPrint({ 1,4 }, L"Data: " + to_wstring(theData) + L"\n\n", 10, 10);
 			}
@@ -254,6 +244,7 @@ int Deque() {
 			Print({ 0,0 }, L"Deque Program    By Keane Carotenuto", 10);
 			SlowPrint({ 1,3 }, L"Checking Emptyness...", 15, 10);
 
+			//Checks if valid first
 			if (myDeque->IsEmpty()) {
 				SlowPrint({ 1,4 }, L"The Deque is Empty. \n\n", 12, 10);
 				
@@ -283,35 +274,85 @@ int Deque() {
 	}
 }
 
+//The main portion of code used to interact with the user in reguards to the quicksort algorithm.
+//This portion of the code is a bit wonky, I could be condensed a lot more, but it runs well enough to keep it the way it is.
 int Sort() {
+	//I delcare my variables here as values that are impossible to achieve through user input, so that I can use them to check the state of the code.
+	int arrayLength = -1;
+	int* myArray = nullptr;
+	int isAscending = -1;
+	int lastGoodNum = 0; // Keeps track of the index of the last number in the array that the user entered
+
+//I use a label here to come back here and re-print the screen after the user has entered some data to clean it up.
+reprint:
 	system("CLS");
 	Print({ 0,0 }, L"Deque and Quicksort Program    By Keane Carotenuto", 10);
 	Print({ 1,3 }, L"Please Enter how long of an Array you want to sort");
-	Print({ 2,5 }, L"Number of Elements: ", 8);
+	Print({ 2,5 }, L"Number of Elements: " + ((arrayLength != -1) ? to_wstring(arrayLength) : L""), 8); //Checks what to print depenidng on state 
 
-	int arrayLength = IntInput(1,100);
+	//Only asks user for length if they havent already
+	if (arrayLength == -1) {
+		arrayLength = IntInput(1, 100);
+		myArray = new int[arrayLength];
 
-	int* myArray = new int[arrayLength];
-
-	Print({ 2,7 }, L"Please Enter all " + to_wstring(arrayLength) + L" Elements now, seperated by spaces", 8);
-	Print({ 2,8 }, L"Or Enter one at a time followed by <ENTER>", 8);
-
-	for (int i = 0; i < arrayLength; i++) {
-		Print({ 0,10 + i }, L"------------------------------------------------------------------", 0);
-		Print({3,10+i}, L"Element " + to_wstring(i + 1) + L": ", 8);
-		myArray[i] = IntInput();
-		Print({ 3,10 + i }, L"------------------------------------------------------------------", 0);
-		Print({ 3,10 + i }, L"Element " + to_wstring(i + 1) + L": " + to_wstring(myArray[i]), 8);
-
+		goto reprint;
 	}
+
+	Print({ 1,7 }, L"Would you like to sort is (0)Ascending, or (1)Descending Order?");
+	Print({ 2,9 }, L"(0) or (1): " + ((isAscending != -1) ? to_wstring(!isAscending) : L"" ), 8);
+
+	//Only asks if user hasnt already chosen
+	if (isAscending == -1) {
+		isAscending = true;
+		(IntInput(0, 1) ? isAscending = false : isAscending = true);
+
+		goto reprint;
+	}
+
+	Print({ 2,11 }, L"Please Enter all " + to_wstring(arrayLength) + L" Elements now, seperated by spaces");
+	Print({ 2,12 }, L"Or Enter one at a time followed by <ENTER>");
+
+	int row = 0;
+	size_t col = 3; //Is a size_t to supress error about data loss when converting to int (even thought it could not happen in this situation)
+
+	//Prints out each of the elements in a vertical list for the user, making sure to stop at the msot recent un-decided element;
+	for (int j = 0; j < lastGoodNum; j++) {
+		if (j % 4 == 0) {
+			row++;
+			col = 3;
+		}
+		Print({ 3 + static_cast<int>(col), 14 + row }, L"Element " + to_wstring(j + 1) + L": " + to_wstring(myArray[j]), 8);
+		col += 22;
+		
+		//col += 12 + to_string(j + 1).size() + to_string(myArray[j]).size();
+	}
+	if (lastGoodNum < arrayLength) {
+		if (lastGoodNum % 4 == 0) {
+			row++;
+			col = 3;
+		}
+
+		//Highlights current elemnt and asks user to input
+		Print({ 3 + static_cast<int>(col), 14 + row }, L"Element " + to_wstring(lastGoodNum + 1) + L": ", 10);
+		myArray[lastGoodNum] = IntInput();
+
+		col += 12 + to_string(lastGoodNum + 1).size() + to_string(myArray[lastGoodNum]).size();
+		lastGoodNum++;
+		goto reprint;
+	}
+
+	//Clears cin so any extra inputs arent counted as input
 	cin.clear();
 	cin.ignore(INT_MAX, '\n');
 
+
+	//Displays the current array, sorts it, and displays the sorted array;
 	wcout << "\n\n";
+	wcout << "Initial ";
 	CQuickSort::DisplayArray(myArray, arrayLength);
-	wcout << "\n";
-	CQuickSort::QuickSort(myArray, 0, arrayLength-1);
-	wcout << "\n";
+
+	CQuickSort::QuickSort(myArray, 0, arrayLength-1, isAscending);
+	wcout << "\n\nSorted ";
 	CQuickSort::DisplayArray(myArray, arrayLength);
 
 	wcout << "\n";

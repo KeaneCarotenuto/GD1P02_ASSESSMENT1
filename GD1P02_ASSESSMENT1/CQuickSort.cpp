@@ -1,32 +1,46 @@
 #include "CQuickSort.h"
 
-void CQuickSort::QuickSort(int _arr[], int lowest, int highest) {
+void CQuickSort::QuickSort(int _arr[], int lowest, int highest, bool isAscending) {
 	//Only happens if the two numbers have not met in the middle.
 	if (lowest < highest) {
 		//Splits the array around one number
-		int splitIndex = Split(_arr, lowest, highest);
+		int splitIndex = Split(_arr, lowest, highest, isAscending);
 
 		//Sorts lower half of current split
-		QuickSort(_arr, lowest, splitIndex - 1);
+		QuickSort(_arr, lowest, splitIndex - 1, isAscending);
 
 		//sorts upper half of current split 
-		QuickSort(_arr, splitIndex + 1, highest);
+		QuickSort(_arr, splitIndex + 1, highest, isAscending);
 	}
 }
 
 //Splits given portion of array (range defined by lowest and highest)
-int CQuickSort::Split(int _arr[], int lowest, int highest) {
+int CQuickSort::Split(int _arr[], int lowest, int highest, bool isAscending) {
 	//makes last number pivot.
 	int pivotVal = _arr[highest];
 	int lowIndex = (lowest - 1);
 
 	//Places elements on the correct side of the pivot
 	for (int i = lowest; i <= highest - 1; i++) {
-		//If smaller than pivot, swap to lowest avaliable position
-		if (_arr[i] < pivotVal) {
-			lowIndex++;
-			swap(&_arr[lowIndex], &_arr[i]);
+		if (isAscending) {
+			//If smaller than pivot, swap to lowest avaliable position
+			if (_arr[i] < pivotVal) {
+				lowIndex++;
+				swap(&_arr[lowIndex], &_arr[i]);
+			}
 		}
+		else
+		{
+			//If Bigger than pivot, swap to lowest avaliable position
+			if (_arr[i] > pivotVal) {
+				lowIndex++;
+				swap(&_arr[lowIndex], &_arr[i]);
+			}
+		}
+		
+		
+
+
 	}
 
 	//Swaps low and high for next round of sorting
@@ -45,6 +59,7 @@ void CQuickSort::swap(int* a, int* b) {
 void CQuickSort::DisplayArray(int _arr[], int _arrSize) {
 	wcout << L"Array: ";
 	for (int i = 0; i < _arrSize; i++) {
+		if (i%30 == 0) wcout << endl;
 		wcout << _arr[i] << L", ";
 	}
 	wcout << L" END." << endl;
